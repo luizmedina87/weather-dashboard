@@ -1,4 +1,4 @@
-//  degree char
+// INSERT ALT TO IMAGES
 
 
 function getData(cityName) {
@@ -36,7 +36,8 @@ function getWeather(locationData) {
       if (response.ok) {
         response.json()
           .then(function(weatherData) {
-            displayData(locationData, weatherData);
+            displayCurrentData(locationData, weatherData);
+            displayforecasts(weatherData);
           })
       }
       else {
@@ -45,17 +46,17 @@ function getWeather(locationData) {
     })
 }
 
-function displayData(locationData, weatherData) {
-  console.log(locationData);
-  console.log(weatherData);
-  var currDate = dayjs().format("MMMM D, YYYY");
+function displayCurrentData(locationData, weatherData) {
+  var currDate = 
+    dayjs(weatherData.current.dt * 1000)
+      .format("MMMM D, YYYY");
   var currIcon = weatherData.current.weather[0].icon;
   // setting section title
   document.getElementById("curr-city")
     .innerHTML = `
       ${locationData.name} 
       ${currDate} 
-      <img src=http://openweathermap.org/img/wn/${currIcon}@2x.png alt="" />
+      <img src="http://openweathermap.org/img/wn/${currIcon}@2x.png" />
     `;
   // setting section data
   document.getElementById("curr-temp")
@@ -63,9 +64,41 @@ function displayData(locationData, weatherData) {
   document.getElementById("curr-wind")
     .textContent = `Wind: ${weatherData.current.wind_speed} MPH`;
   document.getElementById("curr-humidity")
-    .textContent = `Humidity: ${weatherData.current.humidity} %`;
+    .textContent = `Humidity: ${weatherData.current.humidity}%`;
   document.getElementById("curr-uv")
     .textContent = `UV index: ${weatherData.current.uvi}`;
+}
+
+function displayforecasts(weatherData) {
+  var forecastEl = document.getElementById("forecast-cards");
+  for (let i = 1; i < 6; i++) {
+    // extracting data
+    var forecast = weatherData.daily[i];
+    var fcstIcon = forecast.weather[0].icon;
+    console.log(forecast);
+    // creating html elements
+    var fcstCardEl = document.createElement("div");
+    var cardTitleEl = document.createElement("h3");
+    var cardIconEl = document.createElement("img");
+    var cardTempEl = document.createElement("p");
+    var cardWindEl = document.createElement("p");
+    var cartHumidityEl = document.createElement("p");
+    // inserting data into elements
+    cardTitleEl.textContent = 
+      dayjs(forecast.dt * 1000)
+        .format("MMM D, YYYY");
+    cardIconEl.setAttribute("src", `http://openweathermap.org/img/wn/${fcstIcon}@2x.png`);
+    cardTempEl.textContent = `${forecast.temp.day} \u00B0F`;
+    cardWindEl.textContent = `${forecast.wind_speed} MPH`;
+    cartHumidityEl.textContent = `${forecast.humidity}%`;
+    // appending data
+    fcstCardEl.appendChild(cardTitleEl);
+    fcstCardEl.appendChild(cardIconEl);
+    fcstCardEl.appendChild(cardTempEl);
+    fcstCardEl.appendChild(cardWindEl);
+    fcstCardEl.appendChild(cartHumidityEl);
+    forecastEl.appendChild(fcstCardEl);
+  }
 }
 
 getData("Toronto");
