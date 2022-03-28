@@ -10,42 +10,53 @@ function getData() {
     + `limit=1`
     + `&appid=f025109bb94217f8061a8979f6fba37b`
   );
-  fetch(apiUrl)
-    .then(function(response) {
-      if (response.ok) {
-        response.json()
-          .then(function(data) {
-            getWeather(data[0]);
-          })
+  try {
+    fetch(apiUrl)
+      .then(function(response) {
+        if (response.ok) {
+          response.json()
+            .then(function(data) {
+              getWeather(data[0]);
+            })
+        }
+        else {
+          alert("Error retrieving data.");
+        }
       }
-      else {
-        alert("Error retrieving data.");
-      }
-    }
-  );
+    );
+  }
+  catch {
+    alert("Something went wrong. Check your spelling for the city");
+  }
 }
 
 function getWeather(locationData) {
-  var apiUrl = (
-    `https://api.openweathermap.org/data/2.5/onecall?`
-    + `lat=${locationData.lat}&`
-    + `lon=${locationData.lon}&`
-    + `exclude=minutely,hourly`
-    + `&appid=f025109bb94217f8061a8979f6fba37b`
-  );
-  fetch(apiUrl)
-    .then(function(response) {
-      if (response.ok) {
-        response.json()
-          .then(function(weatherData) {
-            displayCurrentData(locationData, weatherData);
-            displayforecasts(weatherData);
-          })
+  try {
+    var apiUrl = (
+      `https://api.openweathermap.org/data/2.5/onecall?`
+      + `lat=${locationData.lat}&`
+      + `lon=${locationData.lon}&`
+      + `exclude=minutely,hourly`
+      + `&appid=f025109bb94217f8061a8979f6fba37b`
+    );
+    fetch(apiUrl)
+      .then(function(response) {
+        if (response.ok) {
+          response.json()
+            .then(function(weatherData) {
+              displayCurrentData(locationData, weatherData);
+              displayforecasts(weatherData);
+            })
+        }
+        else {
+          alert("Error retrieving data.");
+        }
       }
-      else {
-        alert("Error retrieving data.");
-      }
-    })
+    );
+  }
+  catch {
+    alert("Something went wrong. Check your spelling for the city");
+  }
 }
 
 function displayCurrentData(locationData, weatherData) {
