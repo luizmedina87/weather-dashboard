@@ -1,7 +1,9 @@
 // INSERT ALT TO IMAGES
 
 
-function getData(cityName) {
+function getData() {
+  var userInput = document.getElementById("city-search").value.trim();
+  cityName = (!userInput) ? "Toronto" : userInput;
   var apiUrl = (
     `https://api.openweathermap.org/geo/1.0/direct?`
     + `q=${cityName}&`
@@ -70,12 +72,14 @@ function displayCurrentData(locationData, weatherData) {
 }
 
 function displayforecasts(weatherData) {
+  // clear previous elements
   var forecastEl = document.getElementById("forecast-cards");
+  forecastEl.innerHTML = "";
+  // create new elements
   for (let i = 1; i < 6; i++) {
     // extracting data
     var forecast = weatherData.daily[i];
     var fcstIcon = forecast.weather[0].icon;
-    console.log(forecast);
     // creating html elements
     var fcstCardEl = document.createElement("div");
     var cardTitleEl = document.createElement("h3");
@@ -101,4 +105,8 @@ function displayforecasts(weatherData) {
   }
 }
 
-getData("Toronto");
+getData();
+
+document
+  .getElementById("search-btn")
+  .addEventListener("click", getData);
