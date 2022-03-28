@@ -1,6 +1,3 @@
-// INSERT ALT TO IMAGES
-
-
 function getData() {
   var userInput = document.getElementById("city-search").value.trim();
   cityName = (!userInput) ? "Toronto" : userInput;
@@ -16,7 +13,7 @@ function getData() {
         if (response.ok) {
           response.json()
             .then(function(data) {
-              getWeather(data[0]);
+              getWeather(userInput, data[0]);
             })
         }
         else {
@@ -30,7 +27,7 @@ function getData() {
   }
 }
 
-function getWeather(locationData) {
+function getWeather(userInput, locationData) {
   try {
     var apiUrl = (
       `https://api.openweathermap.org/data/2.5/onecall?`
@@ -46,6 +43,7 @@ function getWeather(locationData) {
             .then(function(weatherData) {
               displayCurrentData(locationData, weatherData);
               displayforecasts(weatherData);
+              saveLocation(userInput);
             })
         }
         else {
@@ -69,7 +67,7 @@ function displayCurrentData(locationData, weatherData) {
     .innerHTML = `
       ${locationData.name} 
       ${currDate} 
-      <img src="http://openweathermap.org/img/wn/${currIcon}@2x.png" />
+      <img src="http://openweathermap.org/img/wn/${currIcon}@2x.png" alt="" />
     `;
   // setting section data
   document.getElementById("curr-temp")
@@ -103,6 +101,7 @@ function displayforecasts(weatherData) {
       dayjs(forecast.dt * 1000)
         .format("MMM D, YYYY");
     cardIconEl.setAttribute("src", `http://openweathermap.org/img/wn/${fcstIcon}@2x.png`);
+    cardIconEl.setAttribute("alt", "");
     cardTempEl.textContent = `${forecast.temp.day} \u00B0F`;
     cardWindEl.textContent = `${forecast.wind_speed} MPH`;
     cartHumidityEl.textContent = `${forecast.humidity}%`;
@@ -116,8 +115,25 @@ function displayforecasts(weatherData) {
   }
 }
 
+function saveLocation(userInput) {
+  if (userInput) {
+    var savedCities = localStorage.getItem("citiesSet");
+    savedCities = JSON.parse(savedCities);
+    if (!savedCities) {
+      savedCities = [userInput];
+    }
+    else {
+      savedCities.push(userInput);
+    }
+    var citiesSet = new Set([...savedCities]);
+    localStorage.setItem("citiesSet", JSON.stringify([...citiesSet]));
+  }
+}
+
+// calling function on page load
 getData();
 
+// dealing with user input
 document
   .getElementById("search-btn")
   .addEventListener("click", getData);
