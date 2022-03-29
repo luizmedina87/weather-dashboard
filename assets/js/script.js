@@ -147,6 +147,7 @@ function makebuttons() {
   citiesBtnsEl.innerHTML = "";
   // make new ones
   var savedCities = localStorage.getItem("citiesSet");
+  if (!savedCities) {return}
   savedCities = JSON.parse(savedCities);
   savedCities.forEach(city => {
     var btnEl = document.createElement("button");
