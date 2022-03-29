@@ -1,0 +1,42 @@
+.card-title {
+    font-size: large;
+}
+
+.card-img {
+    width: 50%;
+}
+
+#forecast-cards .card {
+    margin: 0 10px;
+    padding-top: 10px;
+}
+
+#curr-card {
+    padding: 10px;
+    margin: 20px 0;
+}
+
+#curr-uv {
+    font-weight: bold;
+}
+
+button {
+    width: 100%;
+    margin: 5px 0;
+}
+
+.btn-secondary {
+    background-color: ;
+}
+
+#city-search {
+    width: 100%;
+}
+
+#search-btn {
+    margin-bottom: 20px;
+}
+
+#search-title {
+    margin-top: 10px;
+}

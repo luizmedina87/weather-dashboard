@@ -12,29 +12,41 @@
   />
   <!-- css link -->
   <link
-    rel=""
+    rel="stylesheet"
     href="./assets/css/styles.css"
   />
 </head>
 <body>
-  <header>Weather Dashboard</header>
-  <aside>
-    <form>
-      <label for="city-search">Search for a City:</label><br>
-      <input type="text" id="city-search" name="city-search" placeholder="e.g. Toronto">
-    </form>
-    <button id="search-btn">Search</button>
-  </aside>
-  <section id="curr-card">
-    <h1 id="curr-city"></h1>
-    <p id="curr-temp"></p>
-    <p id="curr-wind"></p>
-    <p id="curr-humidity"></p>
-    <p id="curr-uv"></p>
-  </section>
-  <h2>5-Day Forecast:</h2>
-  <section id="forecast-cards">    
-  </section>
+  <header class="bg-dark text-white text-center fs-1">Weather Dashboard</header>
+  <div class="container">
+    <div class="row">
+      <aside class="col-3">
+        <form>
+          <label id="search-title" for="city-search" class="fs-4">Search for a City:</label><br>
+          <input type="text" id="city-search" name="city-search" placeholder="e.g. Toronto">
+        </form>
+        <button id="search-btn" class="btn btn-info">Search</button>
+        <div id="cities-btns"></div>
+      </aside>
+      <div class="col-9">
+      <!-- weather data -->
+        <section id="curr-card" class="card">
+          <h1 id="curr-city"></h1>
+          <p id="curr-temp"></p>
+          <p id="curr-wind"></p>
+          <p id="curr-humidity"></p>
+          <p id="curr-uv"></p>
+        </section>
+        <!-- forecasts section -->
+        <h2>5-Day Forecast:</h2>
+        <section id="forecast-cards" class="row">
+          <!-- here goes the forecast cards -->
+        </section>
+          
+
+      </div>
+    </div>
+  </div>
   <script src="https://unpkg.com/dayjs@1.8.21/dayjs.min.js"></script>
   <script src="./assets/js/script.js"></script>
 </body>

@@ -1,6 +1,7 @@
 function getData() {
-  var userInput = document.getElementById("city-search").value.trim();
-  cityName = (!userInput) ? "Toronto" : userInput;
+  var searchEl = document.getElementById("city-search");
+  var userInput = searchEl.value.trim();
+  cityName = (!userInput) ? "toronto" : userInput.toLowerCase();
   var apiUrl = (
     `https://api.openweathermap.org/geo/1.0/direct?`
     + `q=${cityName}&`
@@ -25,6 +26,8 @@ function getData() {
   catch {
     alert("Something went wrong. Check your spelling for the city");
   }
+  // reseting field
+  searchEl.value = "";
 }
 
 function getWeather(userInput, locationData) {
@@ -44,6 +47,7 @@ function getWeather(userInput, locationData) {
               displayCurrentData(locationData, weatherData);
               displayforecasts(weatherData);
               saveLocation(userInput);
+              makebuttons();
             })
         }
         else {
@@ -78,6 +82,7 @@ function displayCurrentData(locationData, weatherData) {
     .textContent = `Humidity: ${weatherData.current.humidity}%`;
   document.getElementById("curr-uv")
     .textContent = `UV index: ${weatherData.current.uvi}`;
+  uvColorScale(weatherData.current.uvi);
 }
 
 function displayforecasts(weatherData) {
@@ -93,9 +98,14 @@ function displayforecasts(weatherData) {
     var fcstCardEl = document.createElement("div");
     var cardTitleEl = document.createElement("h3");
     var cardIconEl = document.createElement("img");
+    var cardBody = document.createElement("div");
     var cardTempEl = document.createElement("p");
     var cardWindEl = document.createElement("p");
     var cartHumidityEl = document.createElement("p");
+    // adding style
+    fcstCardEl.className = "col card bg-dark bg-opacity-50 text-white";
+    cardTitleEl.className = "card-title";
+    cardIconEl.className = "card-img";
     // inserting data into elements
     cardTitleEl.textContent = 
       dayjs(forecast.dt * 1000)
@@ -108,9 +118,10 @@ function displayforecasts(weatherData) {
     // appending data
     fcstCardEl.appendChild(cardTitleEl);
     fcstCardEl.appendChild(cardIconEl);
-    fcstCardEl.appendChild(cardTempEl);
-    fcstCardEl.appendChild(cardWindEl);
-    fcstCardEl.appendChild(cartHumidityEl);
+    cardBody.appendChild(cardTempEl);
+    cardBody.appendChild(cardWindEl);
+    cardBody.appendChild(cartHumidityEl);
+    fcstCardEl.appendChild(cardBody);
     forecastEl.appendChild(fcstCardEl);
   }
 }
@@ -130,8 +141,55 @@ function saveLocation(userInput) {
   }
 }
 
+function makebuttons() {
+  // clear items
+  var citiesBtnsEl = document.getElementById("cities-btns");
+  citiesBtnsEl.innerHTML = "";
+  // make new ones
+  var savedCities = localStorage.getItem("citiesSet");
+  savedCities = JSON.parse(savedCities);
+  savedCities.forEach(city => {
+    var btnEl = document.createElement("button");
+    btnEl.textContent = properStr(city);
+    btnEl.setAttribute("id", city);
+    btnEl.className = "btn btn-outline-info";
+    citiesBtnsEl.appendChild(btnEl);
+    document.getElementById(city).addEventListener("click", clickBtn);
+  })
+}
+
+function clickBtn() {
+  var searchEl = document.getElementById("city-search");
+  console.log(this.id);
+  searchEl.value = this.id;
+  getData();
+}
+
+function uvColorScale(index) {
+  var color;
+  if (index < 2) {
+    color = "green";
+  }
+  else if (index < 4) {
+    color = "yellow";
+  }
+  else {
+    color = "red";
+  }
+  getElementById = document.getElementById("curr-uv").style.color = color;
+}
+
+function properStr(str) {
+  var splitStr = str.toLowerCase().split(' ');
+  for (var i = 0; i < splitStr.length; i++) {
+      splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+  }
+  return splitStr.join(' ');
+}
+
 // calling function on page load
 getData();
+makebuttons();
 
 // dealing with user input
 document
