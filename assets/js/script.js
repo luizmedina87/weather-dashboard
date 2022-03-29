@@ -127,7 +127,11 @@ function displayforecasts(weatherData) {
 }
 
 function saveLocation(userInput) {
+  // only saves if entered
   if (userInput) {
+    // sets to lowercase before saving to prevent duplicates
+    userInput = userInput.toLowerCase();
+    // saves in set
     var savedCities = localStorage.getItem("citiesSet");
     savedCities = JSON.parse(savedCities);
     if (!savedCities) {
