@@ -71,7 +71,7 @@ function displayCurrentData(locationData, weatherData) {
     .innerHTML = `
       ${locationData.name} 
       ${currDate} 
-      <img src="http://openweathermap.org/img/wn/${currIcon}@2x.png" alt="" />
+      <img src="https://openweathermap.org/img/wn/${currIcon}@2x.png" alt="" />
     `;
   // setting section data
   document.getElementById("curr-temp")
@@ -110,7 +110,7 @@ function displayforecasts(weatherData) {
     cardTitleEl.textContent = 
       dayjs(forecast.dt * 1000)
         .format("MMM D, YYYY");
-    cardIconEl.setAttribute("src", `http://openweathermap.org/img/wn/${fcstIcon}@2x.png`);
+    cardIconEl.setAttribute("src", `https://openweathermap.org/img/wn/${fcstIcon}@2x.png`);
     cardIconEl.setAttribute("alt", "");
     cardTempEl.textContent = `${forecast.temp.day} \u00B0F`;
     cardWindEl.textContent = `${forecast.wind_speed} MPH`;
